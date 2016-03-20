@@ -1,15 +1,23 @@
 import {App, Platform} from 'ionic-angular';
 import {LoginPage} from './pages/login/login';
+import {SessionAccessor} from "./services/SessionAccessor";
+import {RepresentationPage} from "./pages/representation/representation";
 
 
 @App({
   template: '<ion-nav [root]="rootPage"></ion-nav>',
-  config: {}
+  providers: [SessionAccessor]
 })
-export class MyApp {
-  rootPage: any = LoginPage;
+export class VPApp {
+  rootPage: any;
 
-  constructor(platform: Platform) {
+  constructor(platform: Platform, session: SessionAccessor) {
+
+    // This checks the session and applies the correct root page.
+    session.getToken().then((token) => {
+      this.rootPage = token ? RepresentationPage : LoginPage;
+    }, () => this.rootPage = LoginPage);
+
     platform.ready().then(() => {
       // The platform is now ready. Note: if this callback fails to fire, follow
       // the Troubleshooting guide for a number of possible solutions:
