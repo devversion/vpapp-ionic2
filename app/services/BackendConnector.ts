@@ -1,6 +1,7 @@
 import {Injectable, Inject} from 'angular2/core';
 import {Http, Response, Headers} from "angular2/http";
 import {URLEncoder} from "./URLEncoder";
+import {DateFormatter} from "./DateFormatter";
 
 @Injectable()
 export class BackendConnector {
@@ -22,8 +23,22 @@ export class BackendConnector {
         })
       }).subscribe((res: Response) => {
         resolve(res.json());
-      }, (err: any) => {
+      }, (err: Response) => {
         reject(err.json() || 'The login request failed');
+      });
+    });
+  }
+  
+  sendRepresentationRequest(date: Date, token: string): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      this.http.get(this.BACKEND_URL + '/representation/' + DateFormatter.formatForBackend(date), {
+        headers: new Headers({
+          'x-access-token': token
+        })
+      }).subscribe((res: Response) => {
+        resolve(res.json());
+      }, (err: Response) => {
+        reject(err.json || 'An error occurred while reading the representations');
       });
     });
   }
