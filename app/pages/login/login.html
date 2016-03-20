@@ -1,0 +1,28 @@
+<ion-navbar *navbar>
+  <ion-title>
+    Anmelden
+  </ion-title>
+</ion-navbar>
+
+<ion-content>
+
+  <form (submit)="submitLogin(username, password)">
+
+    <ion-list>
+      <ion-item>
+        <ion-input #username type="text" placeholder="Username"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input #password type="password" placeholder="Password"></ion-input>
+      </ion-item>
+
+      <div padding>
+        <button block>Anmelden</button>
+      </div>
+
+    </ion-list>
+
+  </form>
+
+</ion-content>
