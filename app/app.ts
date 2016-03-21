@@ -1,3 +1,4 @@
+import 'rxjs/Rx'
 import {App, Platform} from 'ionic-angular';
 import {LoginPage} from './pages/login/login';
 import {SessionAccessor} from "./services/SessionAccessor";

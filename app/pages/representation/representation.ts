@@ -1,21 +1,24 @@
 import {Page} from "ionic-angular/index";
 import {BackendConnector} from "../../services/BackendConnector";
 import {SessionAccessor} from "../../services/SessionAccessor";
+import {ToTitlePipe} from "../../pipes/ToTitlePipe";
 
 @Page({
   templateUrl: 'build/pages/representation/representation.html',
-  providers: [BackendConnector, SessionAccessor]
+  providers: [BackendConnector, SessionAccessor],
+  pipes: [ToTitlePipe]
 })
 export class RepresentationPage {
-  
+
+  todayData: Promise<any>;
+  tomorrowData: Promise<any>;
+
   constructor(private backend: BackendConnector,
               session: SessionAccessor) {
 
-    //TODO(devversion): finish this - error handling etc.
     session.getToken().then((token) => {
-      backend.sendRepresentationRequest(this._getTomorrowDate(), token).then((data) => {
-        console.log(data);
-      });
+      this.todayData = backend.sendRepresentationRequest(this._getTomorrowDate(), token);
+      this.tomorrowData = backend.sendRepresentationRequest(this._getTomorrowDate(), token);
     });
   }
 
@@ -33,6 +36,9 @@ export class RepresentationPage {
   }
 
   _getTomorrowDate(): Date {
+    // MOCKING DATE FOR TESTING
+    return new Date(2016, 2, 17);
+    /*
     let current = new Date();
     let dayOfWeek = current.getDay();
     let add = 1;
@@ -42,7 +48,7 @@ export class RepresentationPage {
 
     current.setDate(current.getDate() + add);
 
-    return current;
+    return current;*/
   }
 
 }

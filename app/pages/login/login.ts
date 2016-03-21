@@ -9,6 +9,8 @@ import {SessionAccessor} from "../../services/SessionAccessor";
 })
 export class LoginPage {
 
+  isLoading: boolean = false;
+
   constructor(private backend: BackendConnector,
               private nav: NavController,
               private session: SessionAccessor) {
@@ -16,16 +18,26 @@ export class LoginPage {
   }
 
   submitLogin(username: TextArea, password: TextArea) {
+    if (this.isLoading) return;
+    this.isLoading = true;
+
     this.backend.sendLoginRequest(username.value, password.value).then((payload) => {
       this._switchToRepresentationPage();
       this.session.setToken(payload['token']);
+      this.isLoading = false;
     }, () => {
       this.nav.present(Alert.create({
         title: 'Fehler',
         message: 'Die eingegeben Benutzerdaten sind nicht korrekt.',
-        buttons: ['Schließen']
+        buttons: [{
+          text: "Schließen",
+          role: 'cancel',
+          handler: () => {
+            this.isLoading = false
+          }
+        }]
       }));
-    })
+    });
   }
 
   _switchToRepresentationPage() {
