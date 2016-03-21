@@ -22,6 +22,12 @@ export class SessionAccessor {
   }
 
   setToken(token: string) {
+    if (!token) {
+      this.localStorage.remove('VP_TOKEN');
+      this.sqlStorage.remove('VP_TOKEN');
+      return;
+    }
+
     this.localStorage.set('VP_TOKEN', token);
     this.sqlStorage.set('VP_TOKEN', token);
   }

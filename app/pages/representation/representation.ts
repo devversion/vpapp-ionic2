@@ -5,6 +5,7 @@ import {ToTitlePipe} from "../../pipes/ToTitlePipe";
 import {ToIconPipe} from "../../pipes/ToIconPipe";
 import {AsyncDefaultPipe} from "../../pipes/AsyncDefaultPipe";
 import {MoreDetailsModal} from "../../modals/moredetails";
+import {LoginPage} from "../login/login";
 
 @Page({
   templateUrl: 'build/pages/representation/representation.html',
@@ -38,6 +39,18 @@ export class RepresentationPage {
     });
 
     this.nav.present(moreDetails);
+  }
+
+  logout() {
+    this.session.setToken(null);
+    this._switchToLoginPage();
+  }
+
+  _switchToLoginPage() {
+    this.nav.setRoot(LoginPage, {}, {
+      animate: true,
+      direction: 'back'
+    });
   }
 
   _getTodayDate(): Date {

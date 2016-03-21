@@ -43,7 +43,7 @@ export class LoginPage {
   _switchToRepresentationPage() {
     this.nav.setRoot(RepresentationPage, {}, {
       animate: true,
-      direction: 'right'
+      direction: 'forward'
     });
   }
 
