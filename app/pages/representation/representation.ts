@@ -2,11 +2,12 @@ import {Page} from "ionic-angular/index";
 import {BackendConnector} from "../../services/BackendConnector";
 import {SessionAccessor} from "../../services/SessionAccessor";
 import {ToTitlePipe} from "../../pipes/ToTitlePipe";
+import {ToIconPipe} from "../../pipes/ToIconPipe";
 
 @Page({
   templateUrl: 'build/pages/representation/representation.html',
   providers: [BackendConnector, SessionAccessor],
-  pipes: [ToTitlePipe]
+  pipes: [ToTitlePipe, ToIconPipe]
 })
 export class RepresentationPage {
 
@@ -20,6 +21,10 @@ export class RepresentationPage {
       this.todayData = backend.sendRepresentationRequest(this._getTomorrowDate(), token);
       this.tomorrowData = backend.sendRepresentationRequest(this._getTomorrowDate(), token);
     });
+  }
+
+  showMore(item) {
+    //TODO Implement show more.
   }
 
   _getTodayDate(): Date {
