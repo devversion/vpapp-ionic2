@@ -1,9 +1,10 @@
-import {Page} from "ionic-angular/index";
+import {Page, NavController, Modal} from "ionic-angular/index";
 import {BackendConnector} from "../../services/BackendConnector";
 import {SessionAccessor} from "../../services/SessionAccessor";
 import {ToTitlePipe} from "../../pipes/ToTitlePipe";
 import {ToIconPipe} from "../../pipes/ToIconPipe";
 import {AsyncDefaultPipe} from "../../pipes/AsyncDefaultPipe";
+import {MoreDetailsModal} from "../../modals/moredetails";
 
 @Page({
   templateUrl: 'build/pages/representation/representation.html',
@@ -11,13 +12,17 @@ import {AsyncDefaultPipe} from "../../pipes/AsyncDefaultPipe";
   pipes: [ToTitlePipe, ToIconPipe, AsyncDefaultPipe]
 })
 export class RepresentationPage {
+
+  viewDay: string = 'today';
   todayDate: Date;
   tomorrowDate: Date;
   todayPromise: Promise<any>;
   tomorrowPromise: Promise<any>;
 
   constructor(private backend: BackendConnector,
-              session: SessionAccessor) {
+              private nav: NavController,
+              private session: SessionAccessor) {
+
     this.todayDate = this._getTodayDate();
     this.tomorrowDate = this._getTomorrowDate();
 
@@ -28,7 +33,11 @@ export class RepresentationPage {
   }
 
   showMore(item) {
-    //TODO Implement show more.
+    let moreDetails = Modal.create(MoreDetailsModal, {
+      representation: item
+    });
+
+    this.nav.present(moreDetails);
   }
 
   _getTodayDate(): Date {
