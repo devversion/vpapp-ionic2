@@ -21,6 +21,8 @@ export class RepresentationPage implements AfterViewInit {
   todayPromise: Promise<any>;
   tomorrowPromise: Promise<any>;
 
+  isMenuAnimating: boolean = false;
+
   constructor(private backend: BackendConnector,
               private nav: NavController,
               private session: SessionAccessor,
@@ -50,7 +52,12 @@ export class RepresentationPage implements AfterViewInit {
   }
 
   toggleMenu() {
-    this.menu.toggle();
+    if (this.isMenuAnimating) return;
+
+    this.isMenuAnimating = true;
+    this.menu.toggle().then(() => {
+      this.isMenuAnimating = false;
+    });
   }
 
   logout() {
