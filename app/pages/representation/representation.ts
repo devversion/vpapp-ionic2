@@ -11,17 +11,19 @@ import {AsyncDefaultPipe} from "../../pipes/AsyncDefaultPipe";
   pipes: [ToTitlePipe, ToIconPipe, AsyncDefaultPipe]
 })
 export class RepresentationPage {
-  viewSwitch: Promise<any>;
-
-  todayData: Promise<any>;
-  tomorrowData: Promise<any>;
+  todayDate: Date;
+  tomorrowDate: Date;
+  todayPromise: Promise<any>;
+  tomorrowPromise: Promise<any>;
 
   constructor(private backend: BackendConnector,
               session: SessionAccessor) {
+    this.todayDate = this._getTodayDate();
+    this.tomorrowDate = this._getTomorrowDate();
 
     session.getToken().then((token) => {
-      this.todayData = backend.sendRepresentationRequest(this._getTodayDate(), token);
-      this.tomorrowData = backend.sendRepresentationRequest(this._getTomorrowDate(), token);
+      this.todayPromise = backend.sendRepresentationRequest(this.todayDate, token);
+      this.tomorrowPromise = backend.sendRepresentationRequest(this.tomorrowDate, token);
     });
   }
 

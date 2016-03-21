@@ -7,21 +7,22 @@
 <ion-content>
 
   <div padding>
-    <ion-segment [(ngModel)]="viewSwitch">
-      <ion-segment-button [value]="todayData" >
-        {{ _getTodayDate() | date: 'dd-MM-y'}}
+
+    <ion-segment [(ngModel)]="viewDay">
+      <ion-segment-button value="today" >
+        {{ todayDate | date: 'dd/MM/y'}}
       </ion-segment-button>
-      <ion-segment-button [value]="tomorrowData">
-        {{ _getTomorrowDate() | date: 'dd-MM-y'}}
+      <ion-segment-button value="tomorrow">
+        {{ tomorrowDate | date: 'dd/MM/y'}}
       </ion-segment-button>
     </ion-segment>
   </div>
 
-  <div [ngSwitch]="viewSwitch">
+  <div [ngSwitch]="viewDay">
 
-    <div *ngFor="#data of [todayData, tomorrowData]">
-      <ion-list *ngSwitchWhen="data">
-        <div *ngFor="#item of data | async | asyncDefault: [{notFound: true}]">
+    <div *ngFor="#set of [{ data: todayPromise, key: 'today'}, { data: tomorrowPromise, key: 'tomorrow'}]">
+      <ion-list *ngSwitchWhen="set.key">
+        <div *ngFor="#item of set.data | async | asyncDefault: [{notFound: true}]">
 
           <div *ngIf="item.notFound">
             <ion-item>
@@ -42,8 +43,6 @@
 
       </ion-list>
     </div>
-
   </div>
-
 
 </ion-content>
