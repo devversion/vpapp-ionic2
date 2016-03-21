@@ -49,6 +49,8 @@
   <preference name="DisallowOverscroll" value="true"/>
   <preference name="android-minSdkVersion" value="16"/>
   <preference name="BackupWebStorage" value="none"/>
+  <preference name="FadeSplashScreen" value="false"/>
+  <preference name="ShowSplashScreenSpinner" value="false" />
   <preference name="StatusBarOverlaysWebView" value="true"/>
   <preference name="StatusBarStyle" value="default"/>
   <feature name="StatusBar">
