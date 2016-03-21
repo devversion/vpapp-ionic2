@@ -1,4 +1,4 @@
-import {Page, NavController, Modal} from "ionic-angular/index";
+import {Page, NavController, Modal, MenuController} from "ionic-angular/index";
 import {BackendConnector} from "../../services/BackendConnector";
 import {SessionAccessor} from "../../services/SessionAccessor";
 import {ToTitlePipe} from "../../pipes/ToTitlePipe";
@@ -6,13 +6,14 @@ import {ToIconPipe} from "../../pipes/ToIconPipe";
 import {AsyncDefaultPipe} from "../../pipes/AsyncDefaultPipe";
 import {MoreDetailsModal} from "../../modals/moredetails";
 import {LoginPage} from "../login/login";
+import {AfterViewInit} from "angular2/core";
 
 @Page({
   templateUrl: 'build/pages/representation/representation.html',
   providers: [BackendConnector, SessionAccessor],
   pipes: [ToTitlePipe, ToIconPipe, AsyncDefaultPipe]
 })
-export class RepresentationPage {
+export class RepresentationPage implements AfterViewInit {
 
   viewDay: string = 'today';
   todayDate: Date;
@@ -22,7 +23,9 @@ export class RepresentationPage {
 
   constructor(private backend: BackendConnector,
               private nav: NavController,
-              private session: SessionAccessor) {
+              private session: SessionAccessor,
+              private menu: MenuController) {
+
 
     this.todayDate = this._getTodayDate();
     this.tomorrowDate = this._getTomorrowDate();
@@ -33,6 +36,11 @@ export class RepresentationPage {
     });
   }
 
+  ngAfterViewInit() {
+    // Swipe can be only disabled after the menu is initialized.
+    this.menu.swipeEnable(false);
+  }
+
   showMore(item) {
     let moreDetails = Modal.create(MoreDetailsModal, {
       representation: item
@@ -41,15 +49,14 @@ export class RepresentationPage {
     this.nav.present(moreDetails);
   }
 
-  logout() {
-    this.session.setToken(null);
-    this._switchToLoginPage();
+  toggleMenu() {
+    this.menu.toggle();
   }
 
-  _switchToLoginPage() {
-    this.nav.setRoot(LoginPage, {}, {
-      animate: true,
-      direction: 'back'
+  logout() {
+    this.session.setToken(null);
+    this.menu.close().then(() => {
+      this.nav.setRoot(LoginPage);
     });
   }
 
