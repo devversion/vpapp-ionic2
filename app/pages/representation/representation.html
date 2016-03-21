@@ -1,19 +1,49 @@
 <ion-navbar *navbar>
-    <ion-title>
-        Vertretungen
-    </ion-title>
+  <ion-title>
+    Vertretungen
+  </ion-title>
 </ion-navbar>
 
 <ion-content>
 
-    <ion-list>
-        <button ion-item *ngFor="#item of tomorrowData | async" (click)="showMore(item)">
-            <ion-icon item-left>
-                <img [src]="item.type | toIcon">
-            </ion-icon>
+  <div padding>
+    <ion-segment [(ngModel)]="viewSwitch">
+      <ion-segment-button [value]="todayData" >
+        {{ _getTodayDate() | date: 'dd-MM-y'}}
+      </ion-segment-button>
+      <ion-segment-button [value]="tomorrowData">
+        {{ _getTomorrowDate() | date: 'dd-MM-y'}}
+      </ion-segment-button>
+    </ion-segment>
+  </div>
 
-            {{ item.type | toTitle }}
-        </button>
-    </ion-list>
+  <div [ngSwitch]="viewSwitch">
+
+    <div *ngFor="#data of [todayData, tomorrowData]">
+      <ion-list *ngSwitchWhen="data">
+        <div *ngFor="#item of data | async | asyncDefault: [{notFound: true}]">
+
+          <div *ngIf="item.notFound">
+            <ion-item>
+              Es sind keine Vertretungen vorhanden.
+            </ion-item>
+          </div>
+
+          <div *ngIf="!item.notFound">
+            <button ion-item (click)="showMore(item)">
+
+              <ion-icon item-left>
+                <img [src]="item.type | toIcon">
+              </ion-icon>
+              {{ item.type | toTitle }}
+            </button>
+          </div>
+        </div>
+
+      </ion-list>
+    </div>
+
+  </div>
+
 
 </ion-content>

@@ -5,7 +5,7 @@ import {PipeTransform, Pipe} from "angular2/core";
 })
 export class ToTitlePipe implements PipeTransform {
 
-  transform(value: boolean, args: any[]): string {
+  transform(value: number, args: any[]): string {
     switch (value) {
       case 1: return "Vertreten";
       case 2: return "Entfällt";

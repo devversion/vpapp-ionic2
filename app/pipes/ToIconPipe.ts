@@ -5,7 +5,7 @@ import {PipeTransform, Pipe} from "angular2/core";
 })
 export class ToIconPipe implements PipeTransform {
 
-  transform(value: boolean, args: any[]): string {
+  transform(value: number, args: any[]): string {
     switch (value) {
       case 1: return "images/ic_find_replace_black_24dp.png";
       case 2: return "images/ic_do_not_disturb_alt_black_24dp.png";

@@ -3,13 +3,15 @@ import {BackendConnector} from "../../services/BackendConnector";
 import {SessionAccessor} from "../../services/SessionAccessor";
 import {ToTitlePipe} from "../../pipes/ToTitlePipe";
 import {ToIconPipe} from "../../pipes/ToIconPipe";
+import {AsyncDefaultPipe} from "../../pipes/AsyncDefaultPipe";
 
 @Page({
   templateUrl: 'build/pages/representation/representation.html',
   providers: [BackendConnector, SessionAccessor],
-  pipes: [ToTitlePipe, ToIconPipe]
+  pipes: [ToTitlePipe, ToIconPipe, AsyncDefaultPipe]
 })
 export class RepresentationPage {
+  viewSwitch: Promise<any>;
 
   todayData: Promise<any>;
   tomorrowData: Promise<any>;
@@ -18,7 +20,7 @@ export class RepresentationPage {
               session: SessionAccessor) {
 
     session.getToken().then((token) => {
-      this.todayData = backend.sendRepresentationRequest(this._getTomorrowDate(), token);
+      this.todayData = backend.sendRepresentationRequest(this._getTodayDate(), token);
       this.tomorrowData = backend.sendRepresentationRequest(this._getTomorrowDate(), token);
     });
   }
