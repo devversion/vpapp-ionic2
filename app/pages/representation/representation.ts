@@ -68,7 +68,7 @@ export class RepresentationPage {
 
   _getTomorrowDate(): Date {
     // MOCKING DATE FOR TESTING
-    return new Date(2016, 2, 17);
+    return new Date(2016, 2, 16);
     /*
     let current = new Date();
     let dayOfWeek = current.getDay();
