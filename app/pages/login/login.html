@@ -6,19 +6,21 @@
 
 <ion-content>
 
-  <form (submit)="submitLogin(username, password)">
+  <form #loginForm="ngForm" (ngSubmit)="submitLogin(username.value, password.value)">
 
     <ion-list>
       <ion-item>
-        <ion-input #username type="text" placeholder="Username"></ion-input>
+        <ion-label floating>Username</ion-label>
+        <ion-input #username type="text" ngControl="username" required></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-input #password type="password" placeholder="Password"></ion-input>
+        <ion-label floating>Password</ion-label>
+        <ion-input #password type="password" ngControl="password" required></ion-input>
       </ion-item>
 
       <div padding>
-        <button block [disabled]="isLoading">Anmelden</button>
+        <button block [disabled]="isLoading || !loginForm.valid">Anmelden</button>
       </div>
 
     </ion-list>

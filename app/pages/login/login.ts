@@ -17,11 +17,11 @@ export class LoginPage {
 
   }
 
-  submitLogin(username: TextArea, password: TextArea) {
+  submitLogin(username: string, password: string) {
     if (this.isLoading) return;
     this.isLoading = true;
 
-    this.backend.sendLoginRequest(username.value, password.value).then((payload) => {
+    this.backend.sendLoginRequest(username, password).then((payload) => {
       this._switchToRepresentationPage();
       this.session.setToken(payload['token']);
       this.isLoading = false;
@@ -46,5 +46,4 @@ export class LoginPage {
       direction: 'forward'
     });
   }
-
 }
