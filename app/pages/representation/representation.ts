@@ -81,9 +81,6 @@ export class RepresentationPage implements AfterViewInit {
   }
 
   _getTomorrowDate(): Date {
-    // MOCKING DATE FOR TESTING
-    return new Date(2016, 2, 16);
-    /*
     let current = new Date();
     let dayOfWeek = current.getDay();
     let add = 1;
@@ -93,7 +90,7 @@ export class RepresentationPage implements AfterViewInit {
 
     current.setDate(current.getDate() + add);
 
-    return current;*/
+    return current;
   }
 
 }
