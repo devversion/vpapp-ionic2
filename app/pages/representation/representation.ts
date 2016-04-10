@@ -1,6 +1,7 @@
 import {Page, NavController, Modal, MenuController} from "ionic-angular/index";
 import {BackendConnector} from "../../services/BackendConnector";
 import {SessionAccessor} from "../../services/SessionAccessor";
+import {DateUtil} from '../../services/DateUtil';
 import {ToTitlePipe} from "../../pipes/ToTitlePipe";
 import {ToIconPipe} from "../../pipes/ToIconPipe";
 import {AsyncDefaultPipe} from "../../pipes/AsyncDefaultPipe";
@@ -10,7 +11,7 @@ import {AfterViewInit} from "angular2/core";
 
 @Page({
   templateUrl: 'build/pages/representation/representation.html',
-  providers: [BackendConnector, SessionAccessor],
+  providers: [BackendConnector, SessionAccessor, DateUtil],
   pipes: [ToTitlePipe, ToIconPipe, AsyncDefaultPipe]
 })
 export class RepresentationPage implements AfterViewInit {
@@ -26,11 +27,12 @@ export class RepresentationPage implements AfterViewInit {
   constructor(private backend: BackendConnector,
               private nav: NavController,
               private session: SessionAccessor,
+              private dateUtil: DateUtil,
               private menu: MenuController) {
 
 
-    this.todayDate = this._getTodayDate();
-    this.tomorrowDate = this._getTomorrowDate();
+    this.todayDate = dateUtil.getTodayDate();
+    this.tomorrowDate = dateUtil.getTomorrowDate();
 
     session.getToken().then((token) => {
       this.todayPromise = backend.sendRepresentationRequest(this.todayDate, token);
