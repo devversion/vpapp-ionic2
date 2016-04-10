@@ -1,5 +1,5 @@
 import 'rxjs/Rx';
-import {App, Platform, MenuController} from 'ionic-angular';
+import {App} from 'ionic-angular';
 import {LoginPage} from './pages/login/login';
 import {SessionAccessor} from "./services/SessionAccessor";
 import {RepresentationPage} from "./pages/representation/representation";
@@ -12,8 +12,7 @@ import {RepresentationPage} from "./pages/representation/representation";
 export class VPApp {
   rootPage: any;
 
-  constructor(platform: Platform,
-              private session: SessionAccessor) {
+  constructor(private session: SessionAccessor) {
 
     // This checks the session and applies the correct root page.
     session.getToken().then((token) => {
