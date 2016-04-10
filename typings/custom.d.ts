@@ -1,0 +1,1 @@
+/// <reference path="custom/cordova/plugins/CordovaEmailPlugin.d.ts" />

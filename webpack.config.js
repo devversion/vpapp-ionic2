@@ -22,7 +22,10 @@ module.exports = {
         query: {
           doTypeCheck: true,
           resolveGlobs: false,
-          externals: ['typings/browser.d.ts']
+          externals: [
+            'typings/browser.d.ts',
+            'typings/custom.d.ts'
+          ]
         },
         include: path.resolve('app'),
         exclude: /node_modules/

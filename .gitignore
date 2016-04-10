@@ -3,11 +3,16 @@ node_modules/
 
 # IONIC
 www/build/
-typings/
+
+# Custom Typings
+typings/browser/
+typings/browser.d.ts
+typings/main/
+typings/main.d.ts
 
 # CORDOVA
-platforms/
-plugins/
+/platforms/
+/plugins/
 
 # IDEAS
 /.idea/
