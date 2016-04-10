@@ -23,7 +23,7 @@ interface CordovaPluginBackgroundMode {
   /**
    * Checks if the background mode is activated or not
    */
-  isActivated(): boolean;
+  isActive(): boolean;
   /**
    * Function to get notified when the background mode has been activated
    */
