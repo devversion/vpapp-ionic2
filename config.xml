@@ -57,5 +57,5 @@
         <param name="ios-package" onload="true" value="CDVStatusBar" />
     </feature>
     <icon src="resources/ios/icon/icon-small@3x.png" />
-    <plugin name="cordova-plugin-whitelist" spec="~1.2.2-dev" />
+    <plugin name="cordova-plugin-whitelist" spec="https://github.com/apache/cordova-plugin-whitelist.git" />
 </widget>
