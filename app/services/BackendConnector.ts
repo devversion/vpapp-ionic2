@@ -1,14 +1,15 @@
 import {Injectable, Inject} from 'angular2/core';
 import {Http, Headers} from "angular2/http";
 import {URLEncoder} from "./URLEncoder";
-import {DateFormatter} from "./DateFormatter";
+import {DateUtil} from "./DateUtil";
 
 @Injectable()
 export class BackendConnector {
 
   private BACKEND_URL = 'https://vpbackend.herokuapp.com';
 
-  constructor(@Inject(Http) private http: Http) {
+  constructor(@Inject(Http) private http: Http,
+              @Inject(DateUtil) private dateUtil: DateUtil) {
 
   }
 
@@ -23,9 +24,9 @@ export class BackendConnector {
     }).map((res) => res.json())
       .toPromise();
   }
-  
+
   sendRepresentationRequest(date: Date, token: string): Promise<any> {
-    return this.http.get(this.BACKEND_URL + '/representation/' + DateFormatter.formatForBackend(date), {
+    return this.http.get(this.BACKEND_URL + '/representation/' + this.dateUtil.formatForBackend(date), {
       headers: new Headers({
         'x-access-token': token
       })
