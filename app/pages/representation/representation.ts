@@ -1,7 +1,7 @@
 import {Page, NavController, Modal, MenuController} from "ionic-angular/index";
 import {BackendConnector} from "../../services/BackendConnector";
 import {SessionAccessor} from "../../services/SessionAccessor";
-import {DateUtil} from '../../services/DateUtil';
+import {DateUtil} from "../../services/DateUtil";
 import {ToTitlePipe} from "../../pipes/ToTitlePipe";
 import {ToIconPipe} from "../../pipes/ToIconPipe";
 import {AsyncDefaultPipe} from "../../pipes/AsyncDefaultPipe";
