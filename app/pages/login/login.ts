@@ -2,10 +2,11 @@ import {Page, TextArea, NavController, Alert} from 'ionic-angular';
 import {BackendConnector} from "../../services/BackendConnector";
 import {RepresentationPage} from "../representation/representation";
 import {SessionAccessor} from "../../services/SessionAccessor";
+import {DateUtil} from "../../services/DateUtil";
 
 @Page({
   templateUrl: 'build/pages/login/login.html',
-  providers: [BackendConnector, SessionAccessor]
+  providers: [BackendConnector, SessionAccessor, DateUtil]
 })
 export class LoginPage {
 
