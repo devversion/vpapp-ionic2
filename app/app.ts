@@ -20,5 +20,35 @@ export class VPApp {
     }, () => {
       this.rootPage = LoginPage
     });
+
+    document.addEventListener('deviceready', () => this._enableNotifications());
+  }
+
+  _enableNotifications() {
+   let push = PushNotification.init({
+      android: {
+        senderID: "103734954308",
+        topics: ['global']
+      },
+      ios: {
+        alert: true,
+        badge: true,
+        sound: true
+      },
+      windows: {}
+    });
+
+    push.on('notification', (data) => {
+      cordova.plugins.notification.local.schedule({
+        id: 1,
+        title: data.title,
+        text: data.message,
+        icon: 'res://icon.png'
+      });
+    });
+
+    push.on('error', (e) => {
+      console.error(e);
+    });
   }
 }

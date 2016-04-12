@@ -25,6 +25,12 @@
     "typescript": "1.8.7"
   },
   "cordovaPlugins": [
+    {
+      "variables": {
+        "SENDER_ID": "103734954308"
+      },
+      "locator": "phonegap-plugin-push"
+    },
     "cordova-plugin-whitelist",
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar"
