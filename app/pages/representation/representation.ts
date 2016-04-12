@@ -7,14 +7,13 @@ import {ToIconPipe} from "../../pipes/ToIconPipe";
 import {AsyncDefaultPipe} from "../../pipes/AsyncDefaultPipe";
 import {MoreDetailsModal} from "../../modals/moredetails";
 import {LoginPage} from "../login/login";
-import {AfterViewInit} from "angular2/core";
 
 @Page({
   templateUrl: 'build/pages/representation/representation.html',
   providers: [BackendConnector, SessionAccessor, DateUtil],
   pipes: [ToTitlePipe, ToIconPipe, AsyncDefaultPipe]
 })
-export class RepresentationPage implements AfterViewInit {
+export class RepresentationPage {
 
   viewDay: string = 'today';
   todayDate: Date;
@@ -38,11 +37,6 @@ export class RepresentationPage implements AfterViewInit {
       this.todayPromise = backend.sendRepresentationRequest(this.todayDate, token);
       this.tomorrowPromise = backend.sendRepresentationRequest(this.tomorrowDate, token);
     });
-  }
-
-  ngAfterViewInit() {
-    // Swipe can be only disabled after the menu is initialized.
-    this.menu.swipeEnable(false);
   }
 
   showMore(item) {
