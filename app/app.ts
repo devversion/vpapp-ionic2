@@ -35,6 +35,8 @@ export class VPApp {
           topics: ['global']
         },
         ios: {
+          senderID: "103734954308",
+          topics: ['global'],
           alert: true,
           badge: true,
           sound: true
