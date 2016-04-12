@@ -104,7 +104,14 @@ interface CordovaPluginLocalNotification {
    * Get all local notifications
    */
   getAll(callback: (notifications: Array<ICordovaPluginLocalNotificationLocalNotification>) => void): void;
-
+  /**
+   * Register permission to show notifications if not already granted.
+   */
+  registerPermission(callback: ((granted: boolean) => void), scope?: ICordovaPluginLocalNotificationLocalNotification)
+  /**
+   * Informs if the app has the permission to show notifications.
+   */
+  hasPermission(callback: ((granted: boolean) => void), scope?: ICordovaPluginLocalNotificationLocalNotification)
 }
 
 interface ICordovaPluginLocalNotificationLocalNotification {
@@ -149,11 +156,11 @@ interface ICordovaPluginLocalNotificationLocalNotification {
   /**
    * Uri of the icon that is shown in the ticker and notification (android-only)
    */
-  icon?: URL,
+  icon?: String,
   /**
    * Uri of the resource to use in the notification layouts (android-only)
    */
-  smallIcon?: URL,
+  smallIcon?: String,
   /**
    * Ongoing notifications differ from regular notifications in the following ways (android-only):
    * - They are sorted above the regular notifications in the notification panel
