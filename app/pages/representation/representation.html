@@ -51,11 +51,11 @@
 
           <div *ngIf="!item.notFound">
             <button ion-item (click)="showMore(item)">
-
-              <ion-icon item-left>
+              <ion-icon item-right>
                 <img [src]="item.type | toIcon">
               </ion-icon>
-              {{ item.type | toTitle }}
+              <h2>{{ item.type | toTitle }}</h2>
+              <p>{{ item.hour }}. Stunde</p>
             </button>
           </div>
         </div>
