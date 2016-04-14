@@ -1,33 +1,33 @@
-<ion-content padding>
+<ion-navbar *navbar>
+    <ion-title>
+      {{ representation.type | toTitle }}
+    </ion-title>
+</ion-navbar>
+
+<ion-content>
 
   <ion-list>
+    <div>
+      <ion-item *ngIf="representation.room">
+        Stunde: {{ representation.hour }}
+      </ion-item>
 
-    <ion-list-header>
-      {{ representation.type | toTitle }}
-    </ion-list-header>
+      <ion-item *ngIf="representation.room">
+        Raum: {{ representation.room }}
+      </ion-item>
 
-    <ion-item *ngIf="representation.room">
-      Stunde: {{ representation.hour }}
-    </ion-item>
+      <ion-item *ngIf="representation.teacher">
+        Lehrkraft: {{ representation.teacher }}
+      </ion-item>
 
-    <ion-item *ngIf="representation.room">
-      Raum: {{ representation.room }}
-    </ion-item>
+      <ion-item *ngIf="representation.replacement">
+        Vertretung: {{ representation.replacement }}
+      </ion-item>
 
-    <ion-item *ngIf="representation.teacher">
-      Lehrkraft: {{ representation.teacher }}
-    </ion-item>
-
-    <ion-item *ngIf="representation.replacement">
-      Vertretung: {{ representation.replacement }}
-    </ion-item>
-
-    <ion-item *ngIf="representation.data">
-      Zusätzliches: {{ representation.data }}
-    </ion-item>
-
+      <ion-item *ngIf="representation.data">
+        Zusätzliches: {{ representation.data }}
+      </ion-item>
+    </div>
   </ion-list>
-
-  <button block (click)="dismiss()">Schließen</button>
 
 </ion-content>
