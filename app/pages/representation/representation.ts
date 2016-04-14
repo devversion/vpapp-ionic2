@@ -40,11 +40,9 @@ export class RepresentationPage {
   }
 
   showMore(item) {
-    let moreDetails = Modal.create(MoreDetailsModal, {
+    this.nav.push(MoreDetailsModal, {
       representation: item
     });
-
-    this.nav.present(moreDetails);
   }
 
   toggleMenu() {
