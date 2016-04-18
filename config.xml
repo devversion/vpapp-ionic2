@@ -5,6 +5,7 @@
   <author email="paulgschwendtner@me.com" href="http://www.github.com/DevVersion/">Paul Gschwendtner</author>
   <content src="index.html"/>
   <access origin="*"/>
+  <access origin="mailto:*" launch-external="true"/>
   <allow-intent href="http://*/*"/>
   <allow-intent href="https://*/*"/>
   <allow-intent href="tel:*"/>
