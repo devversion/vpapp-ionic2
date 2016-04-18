@@ -1,0 +1,54 @@
+<ion-menu [content]="content">
+  <ion-toolbar secondary>
+    <ion-title>Vertretungsplan</ion-title>
+  </ion-toolbar>
+  <ion-toolbar secondary *ngIf="currentUser">
+    <div padding-left>
+        <ion-icon name="contact"></ion-icon>
+        <span padding-left>
+          <strong>{{ currentUser }}</strong>
+        </span>
+    </div>
+  </ion-toolbar>
+  <ion-content>
+    <ion-list>
+      <button ion-item (click)="showRepresentations()">
+        <ion-icon name="calendar"></ion-icon>
+        <span padding-left>{{ currentClass !== '*' ? 'Klasse ' + currentClass : 'Klassen' }}</span>
+      </button>
+      <button ion-item (click)="toggleMenu()">
+        <ion-icon name="contacts"></ion-icon>
+        <span padding-left>Kontakt</span>
+      </button>
+      <button ion-item (click)="logout()">
+        <ion-icon name="power"></ion-icon>
+        <span padding-left>Abmelden</span>
+      </button>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<ion-navbar *navbar>
+  <button (click)="toggleMenu()" royal dark menuToggle>
+    <ion-icon name="menu"></ion-icon>
+  </button>
+  <ion-title>
+    Kontakt
+  </ion-title>
+</ion-navbar>
+
+<ion-content #content>
+
+  <div padding>
+    <div padding-bottom>
+      Diese App wurde von Paul Gschwendtner und Paul Thiel programmiert.
+    </div>
+    <a href="mailto:paulgschwendtner@gmail.com">
+      <button outline block>
+        <ion-icon name="mail"></ion-icon>
+        <span>E-Mail senden</span>
+      </button>
+    </a>
+  </div>
+
+</ion-content>

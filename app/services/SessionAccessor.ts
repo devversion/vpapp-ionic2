@@ -31,5 +31,4 @@ export class SessionAccessor {
     this.localStorage.set('VP_TOKEN', token);
     this.sqlStorage.set('VP_TOKEN', token);
   }
-
 }

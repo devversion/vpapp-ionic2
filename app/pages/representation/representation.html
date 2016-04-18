@@ -1,16 +1,32 @@
 <ion-menu [content]="content">
-  <ion-toolbar primary>
+  <ion-toolbar secondary>
     <ion-title>Vertretungsplan</ion-title>
+  </ion-toolbar>
+  <ion-toolbar secondary *ngIf="currentUser">
+    <div padding-left>
+        <ion-icon name="contact"></ion-icon>
+        <span padding-left>
+          <strong>{{ currentUser }}</strong>
+        </span>
+    </div>
   </ion-toolbar>
   <ion-content>
     <ion-list>
+      <button ion-item (click)="showRepresentations()">
+        <ion-icon name="calendar"></ion-icon>
+        <span padding-left>{{ currentClass !== '*' ? 'Klasse ' + currentClass : 'Klassen' }}</span>
+      </button>
+      <button ion-item (click)="showImpressum()">
+        <ion-icon name="contacts"></ion-icon>
+        <span padding-left>Kontakt</span>
+      </button>
       <button ion-item (click)="logout()">
-        Abmelden
+        <ion-icon name="power"></ion-icon>
+        <span padding-left>Abmelden</span>
       </button>
     </ion-list>
   </ion-content>
 </ion-menu>
-
 
 <ion-navbar *navbar>
   <button (click)="toggleMenu()" royal dark menuToggle>
@@ -24,7 +40,6 @@
 <ion-content #content>
 
   <div padding>
-
     <ion-segment [(ngModel)]="viewDay">
       <ion-segment-button value="today" >
         {{ todayDate | date: 'dd/MM/y'}}
@@ -36,17 +51,14 @@
   </div>
 
   <div [ngSwitch]="viewDay">
-
     <div *ngFor="#set of [{ data: todayPromise, key: 'today'}, { data: tomorrowPromise, key: 'tomorrow'}]">
       <ion-list *ngSwitchWhen="set.key">
         <div *ngFor="#item of set.data | async | asyncDefault: [{notFound: true}]">
-
           <div *ngIf="item.notFound">
             <ion-item>
               Es sind keine Vertretungen vorhanden.
             </ion-item>
           </div>
-
           <div *ngIf="!item.notFound">
             <button ion-item (click)="showMore(item)">
               <ion-icon item-right>
@@ -57,7 +69,6 @@
             </button>
           </div>
         </div>
-
       </ion-list>
     </div>
   </div>
