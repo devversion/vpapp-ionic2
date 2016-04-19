@@ -4,7 +4,6 @@ import {LoginPage} from './pages/login/login';
 import {SessionAccessor} from "./services/SessionAccessor";
 import {RepresentationPage} from "./pages/representation/representation";
 
-
 @App({
   template: '<ion-nav [root]="rootPage"></ion-nav>',
   providers: [SessionAccessor]
@@ -21,7 +20,17 @@ export class VPApp {
       this.rootPage = LoginPage
     });
 
-    document.addEventListener('deviceready', () => this._enableNotifications());
+    document.addEventListener('deviceready', () => {
+      this._enableNotifications();
+      this._setStatusBarColor();
+    });
+  }
+
+  _setStatusBarColor() {
+    if(cordova.platformId == 'android') {
+      StatusBar.styleDefault();
+      StatusBar.backgroundColorByHexString('#BDBDBD');
+    }
   }
 
   _enableNotifications() {
