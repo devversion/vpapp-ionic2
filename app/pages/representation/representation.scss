@@ -1,0 +1,15 @@
+//Fixes a bug from ionic: can't scroll when have an ion-slide element inside a ion-content element
+ion-slide[scrollable] {
+  min-height: 100%;
+  display: block;
+  overflow-y: scroll;
+}
+
+[menuLeft] {
+  min-height: 100%;
+  padding-left: 5px;
+}
+
+[hidden] {
+  display: none;
+}
