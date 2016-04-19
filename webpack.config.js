@@ -4,7 +4,7 @@ module.exports = {
   entry: [
     path.normalize('es6-shim/es6-shim.min'),
     'reflect-metadata',
-    path.normalize('zone.js/dist/zone-microtask'), 
+    path.normalize('zone.js/dist/zone'),
     path.normalize('intl'),
     path.normalize('intl/locale-data/jsonp/de-DE'),
     path.resolve('app/app')
