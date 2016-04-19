@@ -1,4 +1,4 @@
-import {Page, NavController, Modal, MenuController} from "ionic-angular/index";
+import {IonicApp, Page, Alert, Loading, NavController, Modal, MenuController} from "ionic-angular";
 import {BackendConnector} from "../../services/BackendConnector";
 import {SessionAccessor} from "../../services/SessionAccessor";
 import {JWTDecoder} from '../../services/JWTDecoder';
@@ -25,6 +25,12 @@ export class RepresentationPage {
   todayPromise: Promise<any>;
   tomorrowPromise: Promise<any>;
 
+  isLoadingToday: boolean = false;
+  isLoadingTomorrow: boolean = false;
+
+  selectedSegment = 'today';
+  slides: Array<any>;
+
   isMenuAnimating: boolean = false;
 
   constructor(private backend: BackendConnector,
@@ -32,7 +38,8 @@ export class RepresentationPage {
               private session: SessionAccessor,
               private dateUtil: DateUtil,
               private jwtDecoder: JWTDecoder,
-              private menu: MenuController) {
+              private menu: MenuController,
+              private app: IonicApp) {
 
     this.todayDate = dateUtil.getTodayDate();
     this.tomorrowDate = dateUtil.getTomorrowDate();
@@ -40,9 +47,23 @@ export class RepresentationPage {
     session.getToken().then((token) => {
       this.currentUser = JSON.parse(jwtDecoder.decodeToken(token)).username;
       this.currentClass = JSON.parse(jwtDecoder.decodeToken(token)).class;
-      this.todayPromise = backend.sendRepresentationRequest(this.todayDate, token);
-      this.tomorrowPromise = backend.sendRepresentationRequest(this.tomorrowDate, token);
+      this.refreshTodayRepresentations(session, backend);
+      this.refreshTomorrowRepresentations(session, backend);
     });
+  }
+
+  onSegmentDayChanged(segmentButton) {
+    var sliderComponent = this.app.getComponent('loopSlider');
+
+    const selectedIndex = this.slides.findIndex((slide) => {
+      return slide.key === segmentButton.value;
+    });
+    sliderComponent.slider.slideTo(selectedIndex);
+  }
+
+  onSlideDayChanged(slider) {
+    const currentSlide = this.slides[slider.activeIndex];
+    this.selectedSegment = currentSlide.key;
   }
 
   showMore(item) {
@@ -68,7 +89,6 @@ export class RepresentationPage {
   }
 
   showRepresentations() {
-    //Add refreshing representations
     this.toggleMenu();
   }
 
@@ -76,5 +96,71 @@ export class RepresentationPage {
     this.menu.close().then(() => {
       this.nav.setRoot(ContactPage);
     });
+  }
+
+  refreshTodayRepresentations(session: SessionAccessor, backend: BackendConnector, refresher?) {
+    this.isLoadingToday = true;
+
+    var loadingDialog = Loading.create({
+      content: 'Lade Vertretungen...'
+    });
+    this.nav.present(loadingDialog);
+
+    session.getToken().then((token) => {
+      (this.todayPromise = backend.sendRepresentationRequest(this.todayDate, token))
+          .then(success => {
+            this.isLoadingToday = false;
+            loadingDialog.dismiss();
+          }, error => {
+            this.isLoadingToday = false;
+            loadingDialog.dismiss();
+            this.nav.present(Alert.create({
+              title: 'Keine Verbindung.',
+              subTitle: 'Es konnte keine Verbindung hergestellt werden. Überprüfe deine Internetverbindung!'
+            }));
+          });
+
+      this.slides = [{
+        data: this.todayPromise,
+        key: 'today'
+      }, {
+        data: this.tomorrowPromise,
+        key: 'tomorrow'
+      }];
+    });
+    if (refresher) refresher.complete();
+  }
+
+  refreshTomorrowRepresentations(session: SessionAccessor, backend: BackendConnector, refresher?) {
+    this.isLoadingTomorrow = true;
+
+    var loadingDialog = Loading.create({
+      content: 'Lade Vertretungen...'
+    });
+    this.nav.present(loadingDialog);
+
+    session.getToken().then((token) => {
+      (this.tomorrowPromise = backend.sendRepresentationRequest(this.tomorrowDate, token))
+          .then(success => {
+            this.isLoadingTomorrow = false;
+            loadingDialog.dismiss();
+          }, error => {
+            this.isLoadingTomorrow = false;
+            loadingDialog.dismiss();
+            if(!refresher) this.nav.present(Alert.create({
+              title: 'Keine Verbindung.',
+              subTitle: 'Es konnte keine Verbindung hergestellt werden. Überprüfe deine Internetverbindung!'
+            }));
+          });
+
+      this.slides = [{
+        data: this.todayPromise,
+        key: 'today'
+      }, {
+        data: this.tomorrowPromise,
+        key: 'tomorrow'
+      }];
+    });
+    if (refresher) refresher.complete();
   }
 }

@@ -28,49 +28,57 @@
   </ion-content>
 </ion-menu>
 
-<ion-navbar *navbar>
+<ion-navbar *navbar secondary>
   <button (click)="toggleMenu()" royal dark menuToggle>
     <ion-icon name="menu"></ion-icon>
   </button>
   <ion-title>
-    Vertretungen
+    Vertretungen {{ currentClass !== '*' ? ' der ' + currentClass : '' }}
   </ion-title>
 </ion-navbar>
 
-<ion-content #content>
+<div padding>
+  <ion-segment [(ngModel)]="selectedSegment" (change)="onSegmentDayChanged($event)">
+    <ion-segment-button value="today">
+      {{ todayDate | date: 'dd/MM/y'}}
+    </ion-segment-button>
+    <ion-segment-button value="tomorrow">
+      {{ tomorrowDate | date: 'dd/MM/y'}}
+    </ion-segment-button>
+  </ion-segment>
+</div>
 
-  <div padding>
-    <ion-segment [(ngModel)]="viewDay">
-      <ion-segment-button value="today" >
-        {{ todayDate | date: 'dd/MM/y'}}
-      </ion-segment-button>
-      <ion-segment-button value="tomorrow">
-        {{ tomorrowDate | date: 'dd/MM/y'}}
-      </ion-segment-button>
-    </ion-segment>
-  </div>
+<ion-content #content scrollable [hidden]="(isLoadingToday && isLoadingTomorrow)">
 
-  <div [ngSwitch]="viewDay">
-    <div *ngFor="#set of [{ data: todayPromise, key: 'today'}, { data: tomorrowPromise, key: 'tomorrow'}]">
-      <ion-list *ngSwitchWhen="set.key">
-        <div *ngFor="#item of set.data | async | asyncDefault: [{notFound: true}]">
-          <div *ngIf="item.notFound">
-            <ion-item>
-              Es sind keine Vertretungen vorhanden.
-            </ion-item>
+  <ion-refresher (refresh)="refreshTodayRepresentations(session, backend, $event, refresher)">
+  </ion-refresher>
+
+    <ion-slides (change)="onSlideDayChanged($event)" id="loopSlider" menuLeft>
+      <ion-slide *ngFor="#set of slides" scrollable>
+        <ion-list>
+          <div>
+            <div *ngFor="#item of set.data | async | asyncDefault: [{notFound: true}]">
+
+              <div *ngIf="item.notFound">
+                <ion-item>
+                  Es sind keine Vertretungen vorhanden.
+                </ion-item>
+              </div>
+
+              <div *ngIf="!item.notFound">
+                <button ion-item (click)="showMore(item)">
+                  <ion-icon item-right>
+                    <img [src]="item.type | toIcon">
+                  </ion-icon>
+                  <h2>{{ item.type | toTitle }}</h2>
+                  <p>{{ item.hour }}. Stunde</p>
+                </button>
+              </div>
+            </div>
           </div>
-          <div *ngIf="!item.notFound">
-            <button ion-item (click)="showMore(item)">
-              <ion-icon item-right>
-                <img [src]="item.type | toIcon">
-              </ion-icon>
-              <h2>{{ item.type | toTitle }}</h2>
-              <p>{{ item.hour }}. Stunde</p>
-            </button>
-          </div>
-        </div>
-      </ion-list>
-    </div>
-  </div>
+        </ion-list>
+      </ion-slide>
+    </ion-slides>
+
 
 </ion-content>
