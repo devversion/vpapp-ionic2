@@ -27,7 +27,7 @@ export class VPApp {
   }
 
   _setStatusBarColor() {
-    if(cordova.platformId == 'android') {
+    if (cordova.platformId == 'android') {
       StatusBar.styleDefault();
       StatusBar.backgroundColorByHexString('#BDBDBD');
     }
