@@ -33,7 +33,7 @@
     <ion-icon name="menu"></ion-icon>
   </button>
   <ion-title>
-    Vertretungen {{ currentClass !== '*' ? ' der ' + currentClass : '' }}
+    {{ currentClass == '*' ? 'Klassen' : 'Klasse ' + currentClass }}
   </ion-title>
 </ion-navbar>
 

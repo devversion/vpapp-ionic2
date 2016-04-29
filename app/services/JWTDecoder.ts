@@ -4,6 +4,6 @@ import {Injectable} from "angular2/core";
 export class JWTDecoder {
 
   decodeToken(token: string): string {
-    return window.atob(token.split('.')[1]);
+    return atob(token.split('.')[1]);
   }
 }
