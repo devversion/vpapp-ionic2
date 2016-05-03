@@ -1,4 +1,4 @@
-import {IonicApp, Page, Alert, Loading, NavController, Modal, MenuController} from "ionic-angular";
+import {IonicApp, Page, Alert, Loading, NavController, MenuController} from "ionic-angular";
 import {BackendConnector} from "../../services/BackendConnector";
 import {SessionAccessor} from "../../services/SessionAccessor";
 import {JWTDecoder} from '../../services/JWTDecoder';
