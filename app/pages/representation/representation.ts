@@ -1,6 +1,7 @@
 import {IonicApp, Page, Alert, Loading, NavController, MenuController} from "ionic-angular";
 import {BackendConnector} from "../../services/BackendConnector";
 import {SessionAccessor} from "../../services/SessionAccessor";
+import {RepresentationCache} from "../../services/RepresentationCache";
 import {JWTDecoder} from '../../services/JWTDecoder';
 import {DateUtil} from "../../services/DateUtil";
 import {ToTitlePipe} from "../../pipes/ToTitlePipe";
@@ -12,7 +13,7 @@ import {ContactPage} from '../contact/contact';
 
 @Page({
   templateUrl: 'build/pages/representation/representation.html',
-  providers: [BackendConnector, SessionAccessor, DateUtil, JWTDecoder],
+  providers: [BackendConnector, SessionAccessor, RepresentationCache, DateUtil, JWTDecoder],
   pipes: [ToTitlePipe, ToIconPipe, AsyncDefaultPipe]
 })
 export class RepresentationPage {
@@ -36,6 +37,7 @@ export class RepresentationPage {
   constructor(private backend: BackendConnector,
               private nav: NavController,
               private session: SessionAccessor,
+              private cache: RepresentationCache,
               private dateUtil: DateUtil,
               private jwtDecoder: JWTDecoder,
               private menu: MenuController,
@@ -107,8 +109,10 @@ export class RepresentationPage {
     this.nav.present(loadingDialog);
 
     session.getToken().then((token) => {
-      (this.todayPromise = backend.sendRepresentationRequest(this.todayDate, token))
+      (this.todayPromise = backend.sendRepresentationRequest(this.dateUtil.getTodayDate(), token))
           .then(success => {
+            this.todayDate = this.dateUtil.getTodayDate();
+            this.cache.setTodayRepresentations(success, this.todayDate);
             this.isLoadingToday = false;
             loadingDialog.dismiss();
           }, error => {
@@ -116,8 +120,14 @@ export class RepresentationPage {
             loadingDialog.dismiss();
             this.nav.present(Alert.create({
               title: 'Keine Verbindung.',
-              subTitle: 'Es konnte keine Verbindung hergestellt werden. Überprüfe deine Internetverbindung!'
+              subTitle: 'Es konnte keine Verbindung hergestellt werden. ' +
+                  'Die Vertretungen wurden aus dem Zwischenspeicher geladen!',
+              buttons: ['OK']
             }));
+            this.todayPromise = this.cache.getTodayRepresentations();
+            this.cache.getTodayDate().then(success => {
+              this.todayDate = new Date(success);
+            });
           });
 
       this.slides = [{
@@ -140,8 +150,10 @@ export class RepresentationPage {
     this.nav.present(loadingDialog);
 
     session.getToken().then((token) => {
-      (this.tomorrowPromise = backend.sendRepresentationRequest(this.tomorrowDate, token))
+      (this.tomorrowPromise = backend.sendRepresentationRequest(this.dateUtil.getTomorrowDate(), token))
           .then(success => {
+            this.tomorrowDate = this.dateUtil.getTomorrowDate();
+            this.cache.setTomorrowRepresentations(success, this.tomorrowDate);
             this.isLoadingTomorrow = false;
             loadingDialog.dismiss();
           }, error => {
@@ -149,8 +161,14 @@ export class RepresentationPage {
             loadingDialog.dismiss();
             if(!refresher) this.nav.present(Alert.create({
               title: 'Keine Verbindung.',
-              subTitle: 'Es konnte keine Verbindung hergestellt werden. Überprüfe deine Internetverbindung!'
+              subTitle: 'Es konnte keine Verbindung hergestellt werden. ' +
+                  'Die Vertretungen wurden aus dem Zwischenspeicher geladen!',
+              buttons: ['OK']
             }));
+            this.tomorrowPromise = this.cache.getTomorrowRepresentations();
+            this.cache.getTomorrowDate().then(success => {
+              this.tomorrowDate = new Date(success);
+            });
           });
 
       this.slides = [{

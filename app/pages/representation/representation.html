@@ -37,9 +37,7 @@
   </ion-title>
 </ion-navbar>
 
-<ion-content #content scrollable [hidden]="(isLoadingToday && isLoadingTomorrow)">
-
-  <div padding>
+<ion-toolbar [attr.primary]="isAndroid ? '' : null" >
     <ion-segment [(ngModel)]="selectedSegment" (change)="onSegmentDayChanged($event)">
       <ion-segment-button value="today">
         {{ todayDate | date: 'dd/MM/y'}}
@@ -48,8 +46,9 @@
         {{ tomorrowDate | date: 'dd/MM/y'}}
       </ion-segment-button>
     </ion-segment>
-  </div>
+</ion-toolbar>
 
+<ion-content #content scrollable [hidden]="(isLoadingToday && isLoadingTomorrow)">
   <ion-refresher (refresh)="refreshTodayRepresentations(session, backend, $event, refresher)">
   </ion-refresher>
 
