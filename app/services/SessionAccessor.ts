@@ -1,6 +1,5 @@
 import {Injectable} from "angular2/core";
 import {SqlStorage, Storage, LocalStorage} from "ionic-angular/index";
-import {PromiseWrapper} from "angular2/src/facade/promise";
 
 @Injectable()
 export class SessionAccessor {
@@ -15,7 +14,7 @@ export class SessionAccessor {
 
   getToken(): Promise<string> {
     if (this.localStorage.get('VP_TOKEN')) {
-      return PromiseWrapper.resolve(this.localStorage.get('VP_TOKEN'));
+      return this.localStorage.get('VP_TOKEN');
     }
 
     return this.sqlStorage.get('VP_TOKEN');
